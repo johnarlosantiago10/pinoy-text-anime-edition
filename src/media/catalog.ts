@@ -1,24 +1,32 @@
-import { ANIME_TITLES } from './animeTitles';
-
 export interface CatalogImage {
   id: string;
   label: string;
   src: string | null;
+  fallbackSrc: string | null;
   position: string;
 }
 
-const COMMONS_ARTWORK: Partial<Record<(typeof ANIME_TITLES)[number], string>> = {
-  Doraemon: 'https://commons.wikimedia.org/wiki/Special:FilePath/Doraemon_Anime_Outline.png',
-  Naruto: 'https://commons.wikimedia.org/wiki/Special:FilePath/Naruto-Naruto-Diag-allV3.png',
+const CHA_FILE_NAMES = ['btx', 'digimon', 'goku', 'gokuss', 'gon kilua', 'Kenshin', 'luffy', 'miyagi', 'naruto', 'slumdunk', 'vegeta', 'vincent', 'Zenki'];
+
+export const CHA_IMAGES: CatalogImage[] = CHA_FILE_NAMES.map((fileName) => ({
+    id: `cha-${fileName.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+    label: fileName,
+    src: `/anime/cha/${fileName}.jpg`,
+    fallbackSrc: null,
+    position: '50% 50%',
+  }));
+
+export const CHUB_IMAGE: CatalogImage = {
+  id: 'chub-chub',
+  label: 'Chub',
+  src: '/anime/chub/chub.png',
+  fallbackSrc: null,
+  position: '50% 50%',
 };
 
-function toId(title: string): string {
-  return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-}
+const folderImages: CatalogImage[] = [
+  ...CHA_IMAGES,
+  CHUB_IMAGE,
+];
 
-export const CATALOG: CatalogImage[] = ANIME_TITLES.map((title) => ({
-  id: toId(title),
-  label: title,
-  src: COMMONS_ARTWORK[title] ?? null,
-  position: '50% 50%',
-}));
+export const CATALOG: CatalogImage[] = folderImages;

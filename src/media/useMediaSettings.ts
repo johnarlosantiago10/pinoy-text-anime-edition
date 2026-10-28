@@ -10,6 +10,7 @@ export interface CustomImage {
 export interface ResolvedImage {
   key: string;
   src: string | null;
+  fallbackSrc?: string | null;
   position: string;
   label: string;
 }
@@ -58,7 +59,7 @@ function saveMedia(media: StoredMedia): boolean {
 }
 
 function toResolved(image: CatalogImage): ResolvedImage {
-  return { key: image.id, src: image.src, position: image.position, label: image.label };
+  return { key: image.id, src: image.src, fallbackSrc: image.fallbackSrc, position: image.position, label: image.label };
 }
 
 function makeId(): string {
@@ -79,7 +80,10 @@ export function useMediaSettings() {
     setStorageFull(!saved);
   }, [custom, chaId, chubId, collageSeed]);
 
-  const available = CATALOG.filter((image) => image.src === null || !brokenSources.includes(image.src));
+  const available = CATALOG.filter((image) =>
+    (image.src === null || !brokenSources.includes(image.src)) &&
+    (image.fallbackSrc === null || !brokenSources.includes(image.fallbackSrc)),
+  );
   const customImages: ResolvedImage[] = custom.map((image) => ({
     key: image.id,
     src: image.dataUrl,

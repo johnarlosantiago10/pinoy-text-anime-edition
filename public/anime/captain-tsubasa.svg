@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 672" role="img" aria-label="Original anime-inspired character portrait">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#19235a"/><stop offset="1" stop-color="#090b18"/></linearGradient>
+    <linearGradient id="hair"><stop stop-color="#f04e6b"/><stop offset="1" stop-color="#171221"/></linearGradient>
+  </defs>
+  <rect width="480" height="672" rx="28" fill="url(#bg)"/>
+  <circle cx="240" cy="235" r="178" fill="#fff" opacity=".07"/>
+  <path d="M112 560C126 443 178 405 240 405S354 443 368 560Z" fill="#151827" stroke="#f04e6b" stroke-width="8"/>
+  <path d="M142 270C142 102 338 102 338 270L320 388C298 430 182 430 160 388Z" fill="url(#hair)" stroke="#111" stroke-width="6"/>
+  <ellipse cx="240" cy="294" rx="104" ry="126" fill="#efc99f" stroke="#111" stroke-width="5"/>
+  <path d="M138 265C150 150 205 126 240 126C306 126 342 174 342 265C298 222 260 190 240 178C206 210 178 238 138 265Z" fill="url(#hair)" stroke="#111" stroke-width="6"/>
+  <path d="M162 280L213 295" stroke="#111" stroke-width="9" stroke-linecap="round"/><path d="M267 295L318 280" stroke="#111" stroke-width="9" stroke-linecap="round"/>
+  <ellipse cx="192" cy="300" rx="29" ry="20" fill="#fff"/><ellipse cx="288" cy="300" rx="29" ry="20" fill="#fff"/>
+  <circle cx="194" cy="302" r="10" fill="#252238"/><circle cx="286" cy="302" r="10" fill="#252238"/><circle cx="198" cy="298" r="3" fill="#fff"/><circle cx="290" cy="298" r="3" fill="#fff"/>
+  <path d="M240 310L228 356H252Z" fill="none" stroke="#c78d69" stroke-width="5" stroke-linecap="round"/><path d="M198 378Q240 405 282 378" fill="#fff" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+  <rect x="32" y="560" width="416" height="80" rx="18" fill="#090b18" opacity=".82"/>
+  <text x="240" y="612" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#fff">ANIME TEXTS</text>
+</svg>

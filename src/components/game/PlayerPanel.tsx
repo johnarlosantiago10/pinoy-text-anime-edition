@@ -1,5 +1,6 @@
-import { Crown, User } from 'lucide-react';
 import type { Player, PlayerStatus } from '@/game/types';
+import type { ResolvedImage } from '@/media/useMediaSettings';
+import { CardImage } from '@/components/CardImage';
 
 const STATUS_LABEL: Record<PlayerStatus, string> = {
   naghihintay: 'Naghihintay',
@@ -10,61 +11,43 @@ const STATUS_LABEL: Record<PlayerStatus, string> = {
   bago: 'Bagong manlalaro',
 };
 
-const STATUS_STYLE: Record<PlayerStatus, string> = {
-  naghihintay: 'bg-charcoal-700 text-charcoal-100',
-  nakataya: 'bg-ember-500/20 text-ember-300',
-  nanalo: 'bg-emerald-500/20 text-emerald-300',
-  natalo: 'bg-red-500/20 text-red-300',
-  tabla: 'bg-charcoal-600 text-charcoal-100',
-  bago: 'bg-amber-500/20 text-amber-200',
-};
-
 interface PlayerPanelProps {
   player: Player;
   isMano: boolean;
+  onChoosePamato?: () => void;
+  pamato?: ResolvedImage | null;
 }
 
-export function PlayerPanel({ player, isMano }: PlayerPanelProps) {
+export function PlayerPanel({ player, isMano, onChoosePamato, pamato }: PlayerPanelProps) {
   return (
     <div
-      className={`flex min-w-0 flex-col gap-3 rounded-xl border p-3 transition-colors duration-300 sm:p-4 ${
+      className={`grid min-w-0 grid-cols-[34px_minmax(0,1fr)_auto_auto] items-center gap-1 rounded-lg border px-1 py-1 text-sm transition-colors duration-300 sm:grid-cols-[42px_minmax(0,1fr)_auto_auto] sm:gap-2 sm:px-2 sm:py-1.5 ${
         isMano ? 'border-ember-500 bg-charcoal-800' : 'border-charcoal-700 bg-charcoal-900'
       }`}
     >
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex min-w-0 items-center gap-2">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-charcoal-700 text-charcoal-100">
-            <User className="h-4 w-4" />
-          </span>
-          <div className="min-w-0">
-            <p className="truncate text-sm font-semibold text-charcoal-50">{player.name}</p>
-            <p className="text-xs text-charcoal-400">{player.isHuman ? 'Ikaw' : 'Computer'}</p>
-          </div>
-        </div>
-        {isMano && (
-          <span className="flex shrink-0 items-center gap-1 rounded-full bg-ember-500 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-charcoal-950">
-            <Crown className="h-3 w-3" />
-            MANO
-          </span>
-        )}
-      </div>
-
-      <div className="grid grid-cols-2 gap-2">
-        <div className="rounded-lg bg-charcoal-950/60 p-2">
-          <p className="text-[11px] uppercase tracking-wide text-charcoal-400">Balance</p>
-          <p className="font-display text-xl tabular-nums text-ember-300">{player.balance}</p>
-        </div>
-        <div className="rounded-lg bg-charcoal-950/60 p-2">
-          <p className="text-[11px] uppercase tracking-wide text-charcoal-400">Taya</p>
-          <p className="font-display text-xl tabular-nums text-charcoal-50">{player.wager}</p>
-        </div>
-      </div>
-
-      <span
-        className={`self-start rounded-full px-2.5 py-1 text-xs font-semibold ${STATUS_STYLE[player.status]}`}
+      <button
+        type="button"
+        onClick={onChoosePamato}
+        disabled={!onChoosePamato}
+        aria-label={pamato ? `Palitan ang pamato ni ${player.name}` : undefined}
+        className="h-8 w-full overflow-hidden rounded border border-charcoal-600 bg-charcoal-950 disabled:cursor-default sm:h-10"
       >
-        {STATUS_LABEL[player.status]}
-      </span>
+        {pamato && <CardImage image={pamato} hideLabel />}
+      </button>
+      <div className="min-w-0">
+        <p className="truncate text-sm font-semibold text-charcoal-50">{player.name}</p>
+        <p className="truncate text-sm leading-tight text-charcoal-400">
+          {isMano ? 'MANO · ' : ''}{player.isHuman ? 'You' : 'CPU'} · {STATUS_LABEL[player.status]}
+        </p>
+      </div>
+      <div className="min-w-[38px] text-right">
+        <p className="text-xs uppercase text-charcoal-400">Bal.</p>
+        <p className="font-display text-sm tabular-nums text-ember-300 sm:text-base">{player.balance}</p>
+      </div>
+      <div className="min-w-[34px] text-right">
+        <p className="text-xs uppercase text-charcoal-400">Taya</p>
+        <p className="font-display text-sm tabular-nums text-charcoal-50 sm:text-base">{player.wager}</p>
+      </div>
     </div>
   );
 }

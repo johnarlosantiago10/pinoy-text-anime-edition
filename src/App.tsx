@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { GameScreen } from '@/components/game/GameScreen';
 import { SetupScreen } from '@/components/game/SetupScreen';
+import type { GameConfig } from '@/game/types';
 
 function App() {
-  const [playerName, setPlayerName] = useState<string | null>(null);
+  const [config, setConfig] = useState<GameConfig | null>(null);
 
-  if (playerName === null) {
-    return <SetupScreen onStart={setPlayerName} />;
+  if (!config) {
+    return <SetupScreen onStart={setConfig} />;
   }
-  return <GameScreen playerName={playerName} />;
+  return <GameScreen config={config} />;
 }
 
 export default App;

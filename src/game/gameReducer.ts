@@ -13,14 +13,25 @@ import {
   planLandings,
   randomSide,
 } from './rules';
-import type { Banner, GameAction, GameState, Phase, Player, Side } from './types';
+import type { Banner, GameAction, GameConfig, GameState, Phase, Player, Side } from './types';
 
 const CPU_IDS = ['p1', 'p2'];
 
-function makeInitialPlayers(humanName: string): Player[] {
+function makeInitialPlayers(config: GameConfig): Player[] {
+  if (config.mode === 'multiplayer') {
+    return config.players.map((name, index) => ({
+      id: `p${index}`,
+      name,
+      isHuman: true,
+      balance: START_BALANCE,
+      wager: MIN_WAGER,
+      status: 'naghihintay' as const,
+    }));
+  }
+
   const human: Player = {
     id: 'p0',
-    name: humanName,
+    name: config.players[0] ?? 'You',
     isHuman: true,
     balance: START_BALANCE,
     wager: MIN_WAGER,
@@ -55,20 +66,20 @@ function prepareRound(state: GameState): GameState {
     }
     return { ...player, wager: pickCpuWager(player.balance), status: 'naghihintay' as const };
   });
-  const phase: Phase = state.manoId === state.humanId ? 'waiting' : 'cpu-turn';
+  const allPlayersAreHuman = state.players.every((player) => player.isHuman);
+  const phase: Phase = allPlayersAreHuman || state.manoId === state.humanId ? 'waiting' : 'cpu-turn';
   return {
     ...state,
     players,
     phase,
     elapsed: 0,
     bets: {},
-    plan: null,
   };
 }
 
-export function createInitialState(humanName: string): GameState {
+export function createInitialState(config: GameConfig): GameState {
   const base: GameState = {
-    players: makeInitialPlayers(humanName),
+    players: makeInitialPlayers(config),
     humanId: 'p0',
     manoId: 'p0',
     phase: 'waiting',
@@ -77,6 +88,7 @@ export function createInitialState(humanName: string): GameState {
     round: 0,
     bets: {},
     plan: null,
+    winnerResult: null,
     banner: null,
   };
   return prepareRound(base);
@@ -103,6 +115,7 @@ function startThrow(state: GameState): GameState {
     phase: 'throwing',
     elapsed: 0,
     round: state.round + 1,
+    winnerResult: null,
     banner: null,
   };
 }
@@ -116,6 +129,7 @@ function settleRound(state: GameState): GameState {
   const lines: string[] = [];
   let banner: Banner;
   let manoId = state.manoId;
+  let winnerResult: GameState['winnerResult'] = null;
 
   const players = state.players.map((player) => {
     if (winnerId === null) {
@@ -134,15 +148,16 @@ function settleRound(state: GameState): GameState {
   if (winnerId === null) {
     banner = {
       tone: 'tie',
-      headline: 'TABLA! Walang nanalo sa round na ito.',
+      headline: 'CHUB CHA TABLA',
       lines: [],
     };
   } else {
     const winner = players.find((player) => player.id === winnerId);
     const net = pot - (state.bets[winnerId] ?? 0);
+    winnerResult = { playerId: winnerId, name: winner?.name ?? '', amount: net };
     manoId = winnerId;
     if (winner?.isHuman) {
-      banner = { tone: 'win', headline: `PANALO KA! Nanalo ka ng ${net} teks!`, lines: [] };
+      banner = { tone: 'win', headline: `Nanalo si ${winner?.name ?? ''} ng ${net} teks!`, lines: [] };
     } else {
       banner = {
         tone: 'win',
@@ -166,6 +181,7 @@ function settleRound(state: GameState): GameState {
     phase: 'revealed',
     elapsed: 0,
     bets: {},
+    winnerResult,
     banner: { ...banner, lines: [...banner.lines, ...lines] },
   };
 }
@@ -221,7 +237,10 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       if (state.phase === 'gameover') return state;
       return { ...state, paused: !state.paused };
     case 'RESTART':
-      return createInitialState(state.players[0].name);
+      return createInitialState({
+        mode: state.players.every((player) => player.isHuman) ? 'multiplayer' : 'solo',
+        players: state.players.filter((player) => player.isHuman).map((player) => player.name),
+      });
     default:
       return state;
   }

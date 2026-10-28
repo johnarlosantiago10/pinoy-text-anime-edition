@@ -18,8 +18,16 @@
       radial-gradient(ellipse at 50% 35%, rgba(255, 150, 80, 0.08), transparent 60%),
       radial-gradient(ellipse at 50% 120%, rgba(0, 0, 0, 0.55), transparent 60%),
       url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.25  0 0 0 0 0.16  0 0 0 0 0.09  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-    min-height: 260px;
-    aspect-ratio: 16 / 10;
+    min-height: 160px;
+  }
+
+  .winner-card-glow {
+    animation: winner-glow 900ms ease-in-out infinite alternate;
+  }
+
+  @keyframes winner-glow {
+    from { filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.65)); }
+    to { filter: drop-shadow(0 0 22px rgba(251, 191, 36, 1)); }
   }
 
   .card-back {
@@ -29,8 +37,428 @@
   }
 }
 
-@media (min-width: 1024px) {
+@media (max-width: 639px) {
   .dirt-arena {
-    aspect-ratio: 16 / 9;
+    height: clamp(360px, 48dvh, 430px) !important;
+    min-height: 360px;
+    --card-w: clamp(72px, 25vw, 168px);
+    --card-h: calc(var(--card-w) * 1.4);
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .dirt-arena {
+    height: clamp(440px, 58dvh, 520px) !important;
+    min-height: 440px;
+    --card-w: clamp(72px, 18vw, 168px);
+    --card-h: calc(var(--card-w) * 1.4);
+  }
+}
+
+@media (max-width: 1023px) {
+  .game-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "pamato"
+      "players"
+      "board"
+      "controls";
+    grid-template-rows: max-content max-content max-content max-content;
+    height: auto;
+    min-height: 100%;
+    row-gap: 0;
+    column-gap: 0;
+    overflow-x: hidden;
+    overflow-y: visible;
+  }
+
+  .game-layout .desktop-left-panel,
+  .game-layout .desktop-controls-section {
+    display: contents;
+  }
+
+  .game-layout .desktop-pamato-section {
+    grid-area: pamato;
+    align-self: start;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 0;
+    overflow: hidden;
+    margin-bottom: 0;
+  }
+
+  .game-layout .desktop-pamato-picker {
+    height: auto;
+  }
+
+  .game-layout .mobile-player-list {
+    grid-area: players;
+    align-self: start;
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .game-layout .mobile-player-list + .desktop-board {
+    grid-area: board;
+    height: auto;
+    margin-top: 6px;
+    margin-bottom: 0.5rem;
+  }
+
+  .game-layout .mobile-control-bar {
+    grid-area: controls;
+  }
+
+  .game-layout .desktop-player-list {
+    display: none;
+  }
+
+  .game-layout .desktop-pamato-picker {
+    padding: 0.375rem;
+  }
+
+  .game-layout .pamato-thumbnail-list {
+    align-items: stretch;
+    width: 100%;
+    max-width: 100%;
+    min-height: 0;
+    contain: inline-size;
+    overflow-x: auto;
+  }
+
+  .game-layout .pamato-thumbnail-list button[aria-pressed] {
+    height: 124px;
+    width: 92px;
+  }
+
+  .game-layout .pamato-thumbnail-list button[aria-pressed] > span:first-child {
+    height: 124px;
+    width: 100%;
+  }
+
+  .game-layout .pamato-card {
+    height: 124px;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .game-layout .pamato-card-image {
+    height: 124px !important;
+    width: 92px !important;
+  }
+}
+
+.game-layout .desktop-pamato-picker .pamato-card {
+  height: 124px;
+  width: 92px;
+}
+
+.game-layout .desktop-pamato-picker .pamato-card-image {
+  height: 124px;
+  width: 92px;
+  overflow: hidden;
+  transform: scale(1);
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.game-layout .desktop-pamato-picker .pamato-card:hover .pamato-card-image,
+.game-layout .desktop-pamato-picker .pamato-card:focus-visible .pamato-card-image {
+  border-color: rgb(244, 122, 31);
+  box-shadow: 0 0 14px rgba(244, 122, 31, 0.72);
+  transform: scale(1.08);
+  position: relative;
+  z-index: 2;
+}
+
+
+@media (max-width: 479px) {
+  .game-layout .mobile-player-list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.375rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  main .game-layout {
+    margin-top: 1rem;
+    height: calc(100% - 1rem);
+  }
+
+  .game-layout {
+    display: grid;
+    grid-template-columns: minmax(340px, 31%) minmax(0, 69%);
+    grid-template-rows: minmax(0, 1fr);
+    column-gap: 0.75rem;
+    align-items: stretch;
+    height: calc(100% - 1rem);
+    overflow: hidden;
+  }
+
+  .game-layout .desktop-left-panel {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-height: 0;
+    overflow: hidden;
+    padding-right: 0;
+  }
+
+  .game-layout .desktop-pamato-section {
+    flex: 0 0 auto;
+    min-height: 236px;
+    overflow: hidden;
+  }
+
+  .game-layout .desktop-controls-section {
+    flex: 1 1 auto;
+    min-height: 0;
+    gap: 0.5rem;
+    justify-content: space-evenly;
+    overflow: hidden;
+  }
+
+  .game-layout .desktop-controls-section .mobile-control-bar {
+    margin-top: 0;
+  }
+
+  .game-layout .desktop-board {
+    align-self: stretch;
+    height: 100%;
+    max-height: 100%;
+    min-height: 0;
+  }
+
+  .game-layout .desktop-board .dirt-arena {
+    flex: 1 1 auto;
+    height: 100%;
+    max-height: 100%;
+    min-height: 0;
+  }
+
+  .game-layout .desktop-pamato-picker .pamato-carousel {
+    min-height: 0;
+  }
+
+  .game-layout .desktop-pamato-picker .pamato-thumbnail-list {
+    align-items: stretch;
+    gap: 0.5rem;
+    padding: 0.125rem;
+  }
+
+  .game-layout .desktop-pamato-picker .pamato-carousel button[aria-pressed] {
+    display: flex;
+    height: 236px;
+    max-height: 236px;
+    width: 175px;
+    align-items: center;
+    justify-content: center;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0;
+  }
+
+  .game-layout .desktop-pamato-picker .pamato-carousel button[aria-pressed] > span:first-child {
+    height: 236px;
+    width: 175px;
+  }
+
+  .game-layout .desktop-pamato-picker .pamato-carousel > button {
+    height: 236px;
+    width: 175px;
+    max-height: 236px;
+  }
+
+  .game-layout .desktop-pamato-picker .pamato-card,
+  .game-layout .desktop-pamato-picker .pamato-card-image {
+    height: 236px;
+    width: 175px;
+  }
+}
+
+
+.game-layout .desktop-pamato-picker .pamato-card-image {
+  height: 236px;
+  width: 175px;
+  transform: scale(1);
+  transform-origin: center;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.game-layout .desktop-pamato-picker .pamato-card:hover .pamato-card-image,
+.game-layout .desktop-pamato-picker .pamato-card:focus-visible .pamato-card-image {
+  border-color: rgb(244, 122, 31);
+  box-shadow: 0 0 14px rgba(244, 122, 31, 0.72);
+  transform: scale(1.08);
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes pamato-card-selected {
+  0% { transform: scale(1) rotateY(0deg); }
+  32% { transform: scale(1.12) rotateY(180deg); }
+  72% { transform: scale(1.16) rotateY(180deg); }
+  100% { transform: scale(1) rotateY(0deg); }
+}
+
+.pamato-card-selecting {
+  z-index: 20;
+  transform-origin: center;
+  animation: pamato-card-selected 1350ms cubic-bezier(0.22, 0.75, 0.25, 1) both;
+}
+
+.pamato-card-image {
+  border: 2px solid transparent;
+  border-radius: 0.375rem;
+  box-sizing: border-box;
+}
+
+.pamato-card-selecting .pamato-card-image {
+  border-color: rgb(244, 122, 31);
+  box-shadow: 0 0 18px rgba(244, 122, 31, 0.65);
+}
+
+@keyframes pamato-selection-flight {
+  0% { opacity: 0.95; transform: translate(0, 0) scale(1) rotateY(0deg); }
+  38% { opacity: 1; transform: translate(var(--flight-mid-x, 0px), var(--flight-mid-y, 0px)) scale(1.18) rotateY(180deg); }
+  62%, 82% { opacity: 1; transform: translate(var(--flight-x, 0px), var(--flight-y, 0px)) scale(1.24) rotateY(180deg); box-shadow: 0 0 0 5px rgba(251, 146, 60, 0.55), 0 0 32px 10px rgba(244, 122, 31, 0.85); }
+  100% { opacity: 0; transform: translate(var(--flight-x, 0px), var(--flight-y, 0px)) scale(1.08) rotateY(360deg); }
+}
+
+.pamato-picker-is-selecting .pamato-carousel {
+  visibility: hidden;
+}
+
+.pamato-picker-is-selecting::before {
+  content: '';
+}
+
+.pamato-selection-flight {
+  left: 50%;
+  top: 50%;
+  width: 112px;
+  height: 192px;
+  transform-origin: center;
+  will-change: transform;
+  animation: pamato-selection-flight 1350ms cubic-bezier(0.22, 0.75, 0.25, 1) both;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+body {
+  overflow-y: hidden;
+}
+
+.pamato-thumbnail-list,
+.pamato-card {
+  pointer-events: auto;
+}
+
+.choose-pamato-modal {
+  pointer-events: auto;
+  width: min(calc(100vw - 1rem), 64rem);
+  height: auto;
+  max-height: 90dvh;
+  overflow-y: auto;
+  border: 0 !important;
+  border-radius: 0;
+  background: transparent !important;
+  outline: 0;
+  box-shadow: none !important;
+}
+
+.choose-pamato-modal .desktop-pamato-picker {
+  height: auto;
+  min-height: 0;
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.choose-pamato-modal .desktop-pamato-picker > div:first-child {
+  display: none;
+}
+
+.choose-pamato-modal .pamato-carousel {
+  min-height: 0;
+  margin-top: 0;
+}
+
+.choose-pamato-modal .pamato-thumbnail-list {
+  width: 100%;
+  padding: 0.5rem;
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+}
+
+.choose-pamato-modal .pamato-thumbnail-list button[aria-pressed],
+.choose-pamato-modal .pamato-thumbnail-list button[aria-pressed] > span:first-child {
+  width: clamp(112px, 16vw, 210px);
+  height: clamp(150px, 21.33vw, 280px);
+  flex: 0 0 clamp(112px, 16vw, 210px);
+}
+
+.choose-pamato-modal .pamato-thumbnail-list button[aria-pressed],
+.choose-pamato-modal .pamato-card,
+.choose-pamato-modal .pamato-card:focus-visible,
+.choose-pamato-modal .pamato-card:hover {
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.choose-pamato-modal .pamato-card-image,
+.choose-pamato-modal .pamato-card-image > div {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: 0.375rem;
+  background: transparent;
+  box-shadow: none !important;
+}
+
+.choose-pamato-modal .pamato-card-image img {
+  object-fit: contain;
+}
+
+.choose-pamato-modal .pamato-card-image {
+  transform: scale(1);
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.choose-pamato-modal .pamato-card:hover .pamato-card-image,
+.choose-pamato-modal .pamato-card:focus-visible .pamato-card-image {
+  border-color: rgb(244, 122, 31);
+  box-shadow: 0 0 16px rgba(244, 122, 31, 0.72);
+  transform: scale(1.06);
+  position: relative;
+  z-index: 2;
+}
+
+.choose-pamato-modal .pamato-card-selecting .pamato-card-image {
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 639px) {
+  .choose-pamato-modal {
+    width: calc(100vw - 1rem);
+    max-height: 92dvh;
+    padding: 0.25rem !important;
+  }
+
+  .choose-pamato-modal .pamato-thumbnail-list {
+    gap: 0.75rem;
+    padding: 0.75rem 0.25rem;
   }
 }

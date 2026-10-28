@@ -1,3 +1,10 @@
+export type GameMode = 'solo' | 'multiplayer';
+
+export interface GameConfig {
+  mode: GameMode;
+  players: string[];
+}
+
 export type Side = 'CHA' | 'CHUB';
 
 export type Phase = 'waiting' | 'cpu-turn' | 'throwing' | 'revealed' | 'gameover';
@@ -40,6 +47,7 @@ export interface GameState {
   round: number;
   bets: Record<string, number>;
   plan: ThrowPlan | null;
+  winnerResult: { playerId: string; name: string; amount: number } | null;
   banner: Banner | null;
 }
 

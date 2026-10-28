@@ -20,7 +20,7 @@ function ChaSection({ media }: { media: MediaSettings }) {
           <CardImage image={media.chaImage} onError={media.markBroken} />
         </div>
       )}
-      <div className="grid max-h-80 grid-cols-3 gap-2 overflow-y-auto pr-1">
+      <div className="grid max-h-80 grid-cols-2 gap-2 overflow-y-auto pr-1 sm:grid-cols-3 lg:grid-cols-2">
         {options.map((image) => {
           const selected = media.chaId === image.key;
           return (
@@ -102,9 +102,6 @@ export function MediaPanel({ media }: MediaPanelProps) {
       <ChubSection media={media} />
       <div className="h-px bg-charcoal-700" />
       <CustomImagesSection media={media} />
-      <p className="text-[11px] leading-relaxed text-charcoal-500">
-        Doraemon dan Naruto: Wikimedia Commons, lisensya CC BY-SA. Pumili ng anime mula sa 90 pamagat. Mga larawang ina-upload mo ay nananatili lang sa browser mo.
-      </p>
     </div>
   );
 }

@@ -1,9 +1,9 @@
 import { useEffect, useReducer } from 'react';
 import { gameReducer, createInitialState } from './gameReducer';
-import type { GameState } from './types';
+import type { GameConfig, GameState } from './types';
 
-export function useTeksGame(humanName: string) {
-  const [state, dispatch] = useReducer(gameReducer, humanName, createInitialState);
+export function useTeksGame(config: GameConfig) {
+  const [state, dispatch] = useReducer(gameReducer, config, createInitialState);
 
   useEffect(() => {
     let frame = 0;

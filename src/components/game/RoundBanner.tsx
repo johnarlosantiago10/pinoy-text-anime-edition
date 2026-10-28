@@ -1,4 +1,4 @@
-import { RotateCcw, Trophy, TriangleAlert, Coins } from 'lucide-react';
+import { RotateCcw, TriangleAlert } from 'lucide-react';
 import type { Banner } from '@/game/types';
 
 interface RoundBannerProps {
@@ -15,14 +15,14 @@ export function RoundBanner({ banner, gameOver, paused, onRestart }: RoundBanner
         <TriangleAlert className="h-7 w-7 text-red-300" />
         <p className="font-display text-2xl tracking-wide text-red-100">{banner.headline}</p>
         {banner.lines.map((line) => (
-          <p key={line} className="text-sm text-red-100/90">
+          <p key={line} className="text-base text-red-100/90">
             {line}
           </p>
         ))}
         <button
           type="button"
           onClick={onRestart}
-          className="mt-1 flex items-center gap-2 rounded-lg bg-ember-500 px-5 py-2.5 text-sm font-bold text-charcoal-950 transition-colors hover:bg-ember-400"
+          className="mt-1 flex items-center gap-2 rounded-lg bg-ember-500 px-5 py-2.5 text-base font-bold text-charcoal-950 transition-colors hover:bg-ember-400"
         >
           <RotateCcw className="h-4 w-4" />
           Magsimula muli
@@ -33,23 +33,22 @@ export function RoundBanner({ banner, gameOver, paused, onRestart }: RoundBanner
 
   if (paused) {
     return (
-      <div className="flex min-h-[72px] items-center justify-center rounded-xl border border-charcoal-700 bg-charcoal-900 p-4 text-sm font-semibold text-ember-300">
+      <div className="flex min-h-[72px] items-center justify-center rounded-xl border border-charcoal-700 bg-charcoal-900 p-4 text-base font-semibold text-ember-300">
         Naka-pause ang laro. Pindutin ang RESUME para magpatuloy.
       </div>
     );
   }
 
   if (!banner) {
-    return <div className="min-h-[72px] rounded-xl border border-dashed border-charcoal-700 p-4" />;
+    return null;
   }
 
-  const toneStyle =
-    banner.tone === 'win'
-      ? 'border-emerald-500/60 bg-emerald-950/40'
-      : banner.tone === 'tie'
-        ? 'border-charcoal-500 bg-charcoal-800'
-        : 'border-amber-500/60 bg-amber-950/40';
-  const Icon = banner.tone === 'win' ? Trophy : banner.tone === 'tie' ? Coins : TriangleAlert;
+  if (banner.tone === 'win' || banner.tone === 'tie') {
+    return null;
+  }
+
+  const toneStyle = 'border-amber-500/60 bg-amber-950/40';
+  const Icon = TriangleAlert;
 
   return (
     <div
@@ -61,7 +60,7 @@ export function RoundBanner({ banner, gameOver, paused, onRestart }: RoundBanner
       <div className="min-w-0">
         <p className="font-display text-xl tracking-wide text-charcoal-50 sm:text-2xl">{banner.headline}</p>
         {banner.lines.map((line) => (
-          <p key={line} className="text-sm text-charcoal-200">
+          <p key={line} className="text-base text-charcoal-200">
             {line}
           </p>
         ))}
