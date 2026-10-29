@@ -32,7 +32,10 @@ export function GameScreen({ config }: GameScreenProps) {
   function confirmPamatoSelection(id: string) {
     if (activePamatoPlayer === null) return;
     setPlayerPamatoIds((current) => current.map((value, index) => index === activePamatoPlayer ? id : value));
-    if (!pamatoConfirmed && activePamatoPlayer < state.players.length - 1) {
+    const shouldChooseAnotherPlayer = config.mode === 'multiplayer'
+      && !pamatoConfirmed
+      && activePamatoPlayer < state.players.length - 1;
+    if (shouldChooseAnotherPlayer) {
       setActivePamatoPlayer((current) => current === null ? null : current + 1);
     } else {
       setPamatoConfirmed(true);
@@ -65,7 +68,7 @@ export function GameScreen({ config }: GameScreenProps) {
         <section className="game-layout flex min-w-0 flex-1 flex-col">
           <aside className="desktop-left-panel flex min-w-0 flex-col">
             <div className="desktop-pamato-section min-w-0">
-              <PamatoPicker media={media} />
+              <PamatoPicker media={media} onSelect={media.selectCha} />
             </div>
 
             <div className="desktop-controls-section flex min-h-0 flex-col gap-2">

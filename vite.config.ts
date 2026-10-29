@@ -4,6 +4,7 @@ import { fileURLToPath, URL } from 'node:url';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/pinoy-text-anime-edition/',
   plugins: [react()],
   resolve: {
     alias: {
