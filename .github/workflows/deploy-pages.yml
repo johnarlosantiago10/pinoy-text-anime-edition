@@ -27,14 +27,21 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Build
+      - name: Build production site
         run: npm run build
+      - name: Verify production output
+        run: |
+          test -f dist/index.html
+          test -n "$(find dist/assets -maxdepth 1 -type f -name '*.js' -print -quit)"
+          test -n "$(find dist/assets -maxdepth 1 -type f -name '*.css' -print -quit)"
+          grep -F '/pinoy-text-anime-edition/' dist/index.html
+          find dist -maxdepth 2 -type f | sort
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      - name: Upload dist
+      - name: Upload dist folder
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: ./dist
 
   deploy:
     environment:
